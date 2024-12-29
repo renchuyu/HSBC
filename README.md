@@ -97,7 +97,7 @@ Implement a price variation limiter with following features, the input is an Ord
 | 5	 | VOD.L	     | Sell	 | 235   | 	Yes	 | 245 - 235 = 10	  | 10 >= 10, block  |
 | 6	 | VOD.L	     | Sell	 | 225   | 	Yes	 | 245 - 225= 20	   | 20 >= 10, block  |
 
-Currently, priceLimter is able to generate the following pintout when PriceLimiterTest.java is tested through Junit.
+PriceLimiterTest.java wil generate the following pintout when tested through Junit.
 
 
 new validation scenarios:BOTH
@@ -105,39 +105,64 @@ variations limit is set to new value:8.00 by TICK for OPTION
 variations limit is set to new value:10.00 by VALUE for STOCK
 ****** Stocks ********
 	|0	|VOD.L	|Buy	|245.0	|NO	| 245.0-245.0 = 0.0	|0.0<10.00, pass
+ 
 	|1	|VOD.L	|Buy	|255.0	|YES	| 255.0-245.0 = 10.0	|10.0>=10.00, block
+ 
 	|2	|VOD.L	|Buy	|265.0	|YES	| 265.0-245.0 = 20.0	|20.0>=10.00, block
+ 
 	|3	|VOD.L	|Sell	|245.0	|NO	| 245.0-245.0 = 0.0	|0.0<10.00, pass
+ 
 	|4	|VOD.L	|Sell	|235.0	|YES	| 245.0-235.0 = 10.0	|10.0>=10.00, block
+ 
 	|5	|VOD.L	|Sell	|225.0	|YES	| 245.0-225.0 = 20.0	|20.0>=10.00, block
 validation scenarios:ADVANTAGE
 variations limit is set to new value:8.00 by TICK for OPTION
 variations limit is set to new value:10.00 by VALUE for STOCK
 *******Options********
 	|0	|KS200400F5.KS	|Buy	|8.81	|NO	|(8.81-8.81)/0.01=0	|0<8.00, pass
+ 
 	|1	|KS200400F5.KS	|Buy	|8.72	|YES	|(8.81-8.72)/0.01=9	|9>=8.00, block
+ 
 	|2	|KS200400F5.KS	|Buy	|8.9	|NO	|(8.81-8.9)/0.01=-9	|buy higher, pass
+ 
 	|3	|KS200400F5.KS	|Sell	|8.92	|NO	|(8.91-8.92)/0.01=-1	|abs(-1)<8.00, pass
+ 
 	|4	|KS200400F5.KS	|Sell	|8.82	|NO	|(8.91-8.82)/0.01=9	|sell lower, pass
+ 
 	|5	|KS200400F5.KS	|Sell	|9.0	|YES	|(8.91-9.0)/0.01=-9	|abs(-9)>=8.00, block
+ 
 	|6	|KS200400F5.KS	|Buy	|9.94	|NO	|(9.93-9.94)/0.01=-1	|abs(-1)<8.00, pass
+ 
 	|7	|KS200400F5.KS	|Buy	|9.84	|YES	|(9.93-9.84)/0.01=9	|9>=8.00, block
+ 
 	|8	|KS200400F5.KS	|Buy	|10.1	|NO	|((10.0-9.93)/0.01+(10.1-10.0)/0.05)*-1=-9	|buy higher, pass
+ 
 	|9	|KS200400F5.KS	|Sell	|9.94	|NO	|(9.95-9.94)/0.01=1	|1<8.00, pass
+ 
 	|10	|KS200400F5.KS	|Sell	|9.87	|NO	|(9.95-9.87)/0.01=8	|sell lower, pass
+ 
 	|11	|KS200400F5.KS	|Sell	|10.2	|YES	|((10.0-9.95)/0.01+(10.2-10.0)/0.05)*-1=-9	|abs(-9)>=8.00, block
+ 
 	|12	|KS200400F5.KS	|Buy	|10.1	|NO	|(10.15-10.1)/0.05=1	|1<8.00, pass
+ 
 	|13	|KS200400F5.KS	|Buy	|9.94	|YES	|(10.0-9.94)/0.01+(10.15-10.0)/0.05=9	|9>=8.00, block
+ 
 	|14	|KS200400F5.KS	|Buy	|10.06	|NO	|(10.15-10.06)/0.05=1	|1<8.00, pass
+ 
 	|15	|KS200400F5.KS	|Sell	|10.3	|NO	|(10.25-10.3)/0.05=-1	|abs(-1)<8.00, pass
+ 
 	|16	|KS200400F5.KS	|Sell	|9.96	|NO	|(10.0-9.96)/0.01+(10.25-10.0)/0.05=9	|sell lower, pass
+ 
 	|17	|KS200400F5.KS	|Sell	|10.7	|YES	|(10.25-10.7)/0.05=-9	|abs(-9)>=8.00, block
 
 all thre records are the same  except recrd 14, the oringinal record looks like this:
 
 | 14 | KS200400F5.KS | Buy  | 10.06	 | No    | (10.15-10.60)/0.05 = -9                | buy higher, pass    |
+
 it seems buy price of 10.06 is not used in the caculation: (10.15-10.60)/0.05 = -9, could be an error and my program will generate this for the same order:
+
 |14	|KS200400F5.KS	|Buy	|10.06	|NO	|(10.15-10.06)/0.05=1	|1<8.00, pass
+
 
 except this, priceLimiter generated same outcome as test data through proper configuration, futhere testing is needed once more data are avaliable.
 
