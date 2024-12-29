@@ -97,7 +97,7 @@ Implement a price variation limiter with following features, the input is an Ord
 | 5	 | VOD.L	     | Sell	 | 235   | 	Yes	 | 245 - 235 = 10	  | 10 >= 10, block  |
 | 6	 | VOD.L	     | Sell	 | 225   | 	Yes	 | 245 - 225= 20	   | 20 >= 10, block  |
 
-PriceLimiterTest.java wil generate the following pintout when tested through Junit.
+PriceLimiterTest.java wil generate the following printout when tested through Junit.
 
 
 new validation scenarios:BOTH
@@ -164,11 +164,11 @@ variations limit is set to new value:10.00 by VALUE for STOCK
  
 	|17	|KS200400F5.KS	|Sell	|10.7	|YES	|(10.25-10.7)/0.05=-9	|abs(-9)>=8.00, block
 
-all these records are the same  except record 14, the oringinal record looks like this:
+all these records are the same with test data except record 14, the oringinal record of test data looks like this:
 
 | 14 | KS200400F5.KS | Buy  | 10.06	 | No    | (10.15-10.60)/0.05 = -9                | buy higher, pass    |
 
-it seems buy price of 10.06 is not used in the caculation: (10.15-10.60)/0.05 = -9, could be an error and my program will generate this for the same order:
+it seems buy price of 10.06 is not used in the caculation: (10.15-10.60)/0.05 = -9, could be an error and my program generate the following message for the same order:
 
 |14	|KS200400F5.KS	|Buy	|10.06	|NO	|(10.15-10.06)/0.05=1	|1<8.00, pass
 
