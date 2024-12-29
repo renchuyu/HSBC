@@ -101,9 +101,13 @@ PriceLimiterTest.java wil generate the following pintout when tested through Jun
 
 
 new validation scenarios:BOTH
+
 variations limit is set to new value:8.00 by TICK for OPTION
+
 variations limit is set to new value:10.00 by VALUE for STOCK
+
 ****** Stocks ********
+
 	|0	|VOD.L	|Buy	|245.0	|NO	| 245.0-245.0 = 0.0	|0.0<10.00, pass
  
 	|1	|VOD.L	|Buy	|255.0	|YES	| 255.0-245.0 = 10.0	|10.0>=10.00, block
@@ -115,10 +119,15 @@ variations limit is set to new value:10.00 by VALUE for STOCK
 	|4	|VOD.L	|Sell	|235.0	|YES	| 245.0-235.0 = 10.0	|10.0>=10.00, block
  
 	|5	|VOD.L	|Sell	|225.0	|YES	| 245.0-225.0 = 20.0	|20.0>=10.00, block
+ 
 validation scenarios:ADVANTAGE
+
 variations limit is set to new value:8.00 by TICK for OPTION
+
 variations limit is set to new value:10.00 by VALUE for STOCK
+
 *******Options********
+
 	|0	|KS200400F5.KS	|Buy	|8.81	|NO	|(8.81-8.81)/0.01=0	|0<8.00, pass
  
 	|1	|KS200400F5.KS	|Buy	|8.72	|YES	|(8.81-8.72)/0.01=9	|9>=8.00, block
@@ -155,7 +164,7 @@ variations limit is set to new value:10.00 by VALUE for STOCK
  
 	|17	|KS200400F5.KS	|Sell	|10.7	|YES	|(10.25-10.7)/0.05=-9	|abs(-9)>=8.00, block
 
-all thre records are the same  except recrd 14, the oringinal record looks like this:
+all these records are the same  except record 14, the oringinal record looks like this:
 
 | 14 | KS200400F5.KS | Buy  | 10.06	 | No    | (10.15-10.60)/0.05 = -9                | buy higher, pass    |
 
@@ -165,6 +174,8 @@ it seems buy price of 10.06 is not used in the caculation: (10.15-10.60)/0.05 = 
 
 
 except this, priceLimiter generated same outcome as test data through proper configuration, futhere testing is needed once more data are avaliable.
+
+the testing data of option show that instead of (buy_price - reference_price)/tick,  (reference_price - buy)/tick is used for the calculation, which is not as described in the apple example, so priceLimiter used the same formula for option. program will also assume that last_trade_price is keeping changing in order to match the test data.
 
 
 
