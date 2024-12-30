@@ -97,7 +97,15 @@ Implement a price variation limiter with following features, the input is an Ord
 | 5	 | VOD.L	     | Sell	 | 235   | 	Yes	 | 245 - 235 = 10	  | 10 >= 10, block  |
 | 6	 | VOD.L	     | Sell	 | 225   | 	Yes	 | 245 - 225= 20	   | 20 >= 10, block  |
 
-PriceLimiterTest.java wil generate the following printout when tested through Junit.
+========================================================================================================
+
+PriceLimiter.java is the utility class to do the calculation, user can call processCommand to do the caculation, a Message object will be returned with wether price variation limiter is activated (using Message.isAlert()) or not, along with the reason description and variation (calcualtion formula). 
+
+Before use PriceLimiter to do the caulculation, user need to set up the ticktable, scenarios, limit conditions..etc, PriceLimiterTest.java show all the steps for this.
+
+Also, PriceLimter is not thread safe, if you need a multithread version, please let me know.
+
+PriceLimiterTest.java is the test class and it can replicate tesitng data, it wil generate the following printout when tested through Junit.
 
 
 new validation scenarios:BOTH
