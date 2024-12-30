@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 import java.util.*;
 
 /**
- * The type Price limiter.
+ * The type Price limiter. priceReferenceTable and tickTable are better to be static if they are the same for all instance. 
  */
 public class PriceLimiter {
 
@@ -23,6 +23,7 @@ public class PriceLimiter {
     //tickTables for different instruments, use instruments as key to access TickTable
     private final Hashtable<String, TickTable> tickTables = new Hashtable<String, TickTable>();
 
+    
 
     /**
      * Add price refrence.
