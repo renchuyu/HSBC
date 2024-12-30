@@ -189,6 +189,10 @@ except this, priceLimiter generated same outcome as test data through proper con
 
 the testing data of option show that instead of (buy_price - reference_price)/tick,  (reference_price - buy)/tick is used for the calculation, which is not as described in the apple example, so priceLimiter used the same formula for option. program will also assume that last_trade_price is keeping changing in order to match the test data.
 
+If there is any question, please feel free to contact me at renchuyubj@163.com directly and thank you.
+
+best regards
+
 
 
 
