@@ -105,7 +105,7 @@ PriceLimiter.java is the utility class to do the calculation, user can call proc
 
 Before use PriceLimiter to do the caulculation, user need to set up the ticktable, scenarios, limit conditions..etc, PriceLimiterTest.java show all the steps for this.
 
-Also, PriceLimter is not thread safe, if you need a multithread version, please let me know.
+Also, PriceLimter is not thread safe, if multithread is required please let me know.
 
 PriceLimiterTest.java is the test class and it can replicate tesitng data, it wil generate the following printout when tested through Junit.
 
