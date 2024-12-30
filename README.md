@@ -97,7 +97,9 @@ Implement a price variation limiter with following features, the input is an Ord
 | 5	 | VOD.L	     | Sell	 | 235   | 	Yes	 | 245 - 235 = 10	  | 10 >= 10, block  |
 | 6	 | VOD.L	     | Sell	 | 225   | 	Yes	 | 245 - 225= 20	   | 20 >= 10, block  |
 
-========================================================================================================
+==================================================================================
+
+# Implementation:
 
 PriceLimiter.java is the utility class to do the calculation, user can call processCommand to do the caculation, a Message object will be returned with wether price variation limiter is activated (using Message.isAlert()) or not, along with the reason description and variation (calcualtion formula). 
 
@@ -112,7 +114,9 @@ new validation scenarios:BOTH
 
 variations limit is set to new value:8.00 by TICK for OPTION
 
+
 variations limit is set to new value:10.00 by VALUE for STOCK
+
 
 ****** Stocks ********
 
