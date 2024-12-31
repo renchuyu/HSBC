@@ -15,13 +15,13 @@ public class PriceLimiter {
 
     //limit is hashtable with product_tye as key, VariationType and Value pair are stored as SimpleEntry, this SimpleEntry is stored as value in hashtable
     //hashmap should be used as there is no synchronized issue.
-    private static final Hashtable<String, AbstractMap.SimpleEntry> limits = new Hashtable<String, AbstractMap.SimpleEntry>();
+    private static final HashMap<String, AbstractMap.SimpleEntry> limits = new HashMap<String, AbstractMap.SimpleEntry>();
 
     //priceReferenceTable for different instruments with instrument as key,
-    private static final Hashtable<String, PriceReference> priceReferenceTable = new Hashtable<String, PriceReference>();
+    private static final HashMap<String, PriceReference> priceReferenceTable = new HashMap<String, PriceReference>();
 
     //tickTables for different instruments, use instruments as key to access TickTable
-    private static final Hashtable<String, TickTable> tickTables = new Hashtable<String, TickTable>();
+    private static final HashMap<String, TickTable> tickTables = new HashMap<String, TickTable>();
 
 
     /**
@@ -102,7 +102,7 @@ public class PriceLimiter {
             System.out.println("invalid product type:"+  variationType +" (Stock, Option or Future is needed)");
             return;
         }
-       //variation need to be percentage, value or tick
+        //variation need to be percentage, value or tick
         if(!variationType.equalsIgnoreCase(Constants.VARIATION_TYPE_PERCENTAGE) && !variationType.equalsIgnoreCase(Constants.VARIATION_TYPE_VALUE)&&!variationType.equalsIgnoreCase(Constants.VARIATION_TYPE_TICK))
         {
             System.out.println("invalid variation type:"+  variationType +" (Percentage, Value or Tick is needed)");
@@ -184,7 +184,7 @@ public class PriceLimiter {
                     pecentageStr= "abs("+ formatToPercentage(variationPercentage.floatValue()) + ")";
                     variationPercentage = variationPercentage.abs();
                 }
-                    else
+                else
                     pecentageStr = formatToPercentage(variationPercentage.floatValue());
 
                 if (variationPercentage.floatValue() >= ((BigDecimal)limit.getValue()).divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP).floatValue()) {
@@ -313,55 +313,55 @@ public class PriceLimiter {
      */
     public Message scenarioHandling(String side, BigDecimal price, PriceReference priceReference, Message message) throws Exception {
 
-       //scenario handling
-       switch (validationScenario)
-       {
-           case Constants.SCENARIOS_ADVANTAGE:
-               // advantage scenario, buy high and sell low is ok
+        //scenario handling
+        switch (validationScenario)
+        {
+            case Constants.SCENARIOS_ADVANTAGE:
+                // advantage scenario, buy high and sell low is ok
 
-               if(side.equalsIgnoreCase(Constants.ORDER_SIDE_BUY)&& (price.floatValue()> priceReference.getReferencePrice().floatValue()))
-               {
+                if(side.equalsIgnoreCase(Constants.ORDER_SIDE_BUY)&& (price.floatValue()> priceReference.getReferencePrice().floatValue()))
+                {
 
-                   if(message.isAlert())
-                   {
-                       message.setDescription("buy higher, pass") ;
-                       message.setAlert(false);
+                    if(message.isAlert())
+                    {
+                        message.setDescription("buy higher, pass") ;
+                        message.setAlert(false);
 
-                   }
+                    }
 
-               }
-               if( side.equalsIgnoreCase(Constants.ORDER_SIDE_SELL)&&(price.floatValue()<priceReference.getReferencePrice().floatValue()))
-               {
-                   if(message.isAlert()) {
-                       message.setAlert(false);
-                       message.setDescription("sell lower, pass");
-                   }
-               }
-               break;
-           case Constants.SCENARIOS_DISADVANTAGE:
-               // disadvantage scenario, buy low and sell high is ok
-               if(side.equalsIgnoreCase(Constants.ORDER_SIDE_BUY)&& (price.floatValue()<priceReference.getReferencePrice().floatValue()))
-               {
-                   if(message.isAlert()) {
-                       message.setAlert(false);
-                       message.setDescription("buy lower, pass");
-                   }
-               }
-               if( side.equalsIgnoreCase(Constants.ORDER_SIDE_SELL)&&(price.floatValue()>priceReference.getReferencePrice().floatValue()))
-               {
-                   if(message.isAlert()) {
-                       message.setAlert(false);
-                       message.setDescription("sell higher, pass");
-                   }
-               }
-               break;
-           default:
+                }
+                if( side.equalsIgnoreCase(Constants.ORDER_SIDE_SELL)&&(price.floatValue()<priceReference.getReferencePrice().floatValue()))
+                {
+                    if(message.isAlert()) {
+                        message.setAlert(false);
+                        message.setDescription("sell lower, pass");
+                    }
+                }
+                break;
+            case Constants.SCENARIOS_DISADVANTAGE:
+                // disadvantage scenario, buy low and sell high is ok
+                if(side.equalsIgnoreCase(Constants.ORDER_SIDE_BUY)&& (price.floatValue()<priceReference.getReferencePrice().floatValue()))
+                {
+                    if(message.isAlert()) {
+                        message.setAlert(false);
+                        message.setDescription("buy lower, pass");
+                    }
+                }
+                if( side.equalsIgnoreCase(Constants.ORDER_SIDE_SELL)&&(price.floatValue()>priceReference.getReferencePrice().floatValue()))
+                {
+                    if(message.isAlert()) {
+                        message.setAlert(false);
+                        message.setDescription("sell higher, pass");
+                    }
+                }
+                break;
+            default:
 
 
-       }
+        }
 
-       return message;
-   }
+        return message;
+    }
 
     /**
      * Sets last trading price.
@@ -370,15 +370,15 @@ public class PriceLimiter {
      * @param lastTradingPrice the last trading price
      */
     public void setLastTradingPrice(String instrument, float lastTradingPrice)
-   {
+    {
 
-       PriceReference priceReference =  priceReferenceTable.get(instrument);
+        PriceReference priceReference =  priceReferenceTable.get(instrument);
 
-       if(priceReference!=null)
-       {
-           priceReference.setLastTradePrice(BigDecimal.valueOf(lastTradingPrice).setScale(2,RoundingMode.HALF_UP));
-       }
+        if(priceReference!=null)
+        {
+            priceReference.setLastTradePrice(BigDecimal.valueOf(lastTradingPrice).setScale(2,RoundingMode.HALF_UP));
+        }
 
 
-   }
+    }
 }
