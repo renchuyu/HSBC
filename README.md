@@ -133,7 +133,8 @@ validation scenarios:ADVANTAGE
 
 variations limit is set to new value:8.00 by TICK for OPTION
 
-*******Options********
+
+****** Options ********
 
 	|0	|KS200400F5.KS	|Buy	|8.81	|NO	|(8.81-8.81)/0.01=0	|0<8.00, pass
  
