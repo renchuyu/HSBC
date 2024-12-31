@@ -186,7 +186,8 @@ except this, priceLimiter generated same outcome as test data through proper con
 
 the testing data of option show that instead of (buy_price - reference_price)/tick,  (reference_price - buy)/tick is used for the calculation, which is not as described in the apple example, so priceLimiter used the same formula for option. program will also assume that last_trade_price is keeping changing in order to match the test data.
 
-##Further testing
+
+## Further testing
 
 New test for future with limit type by percentage is added in the processCommandFuture method in the PriceLimiterTest.java. the test put 5% limit with scenarios of DISADVANTAGE on all trade and it will generated following outcome:
 
