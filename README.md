@@ -112,9 +112,6 @@ PriceLimiterTest.java is the test class and it can replicate tesitng data, it wi
 
 new validation scenarios:BOTH
 
-variations limit is set to new value:8.00 by TICK for OPTION
-
-
 variations limit is set to new value:10.00 by VALUE for STOCK
 
 
@@ -135,8 +132,6 @@ variations limit is set to new value:10.00 by VALUE for STOCK
 validation scenarios:ADVANTAGE
 
 variations limit is set to new value:8.00 by TICK for OPTION
-
-variations limit is set to new value:10.00 by VALUE for STOCK
 
 *******Options********
 
@@ -187,7 +182,44 @@ it seems buy price of 10.06 is not used in the caculation: (10.15-10.60)/0.05 = 
 
 except this, priceLimiter generated same outcome as test data through proper configuration, futhere testing is needed once more data are avaliable.
 
+
 the testing data of option show that instead of (buy_price - reference_price)/tick,  (reference_price - buy)/tick is used for the calculation, which is not as described in the apple example, so priceLimiter used the same formula for option. program will also assume that last_trade_price is keeping changing in order to match the test data.
+
+##Further testing
+New test for future with limit type by percentage is added in the processCommandFuture method in the PriceLimiterTest.java. the test put 5% limit with scenarios of DISADVANTAGE on all trade and it will generated following outcome:
+****** Future ********
+	|0	|HSIZ4	|Buy	|18900.0	|NO	|(18900.00-19010.00)/19010.00=-0.58%	|abs(-0.58%)<5.00%, pass
+ 
+	|1	|HSIZ4	|Buy	|20000.0	|NO	|(19050.00-19010.00)/19010.00=0.21%	|0.21%<5.00%, pass
+ 
+	|2	|HSIZ4	|Buy	|18000.0	|NO	|(18000.00-19010.00)/19010.00=-5.31%	|buy lower, pass
+ 
+	|3	|HSIZ4	|Buy	|18000.0	|YES	|(20000.00-19010.00)/19010.00=5.21%	|5.21%>=5.00%, block
+ 
+	|4	|HSIZ4	|Sell	|18900.0	|NO	|(18900.00-19010.00)/19010.00=-0.58%	|abs(-0.58%)<5.00%, pass
+ 
+	|5	|HSIZ4	|Sell	|19050.0	|NO	|(19050.00-19010.00)/19010.00=0.21%	|0.21%<5.00%, pass
+ 
+	|6	|HSIZ4	|Sell	|18000.0	|YES	|(18000.00-19010.00)/19010.00=-5.31%	|abs(-5.31%)>=5.00%, block
+ 
+	|7	|HSIZ4	|Sell	|20000.0	|NO	|(20000.00-19010.00)/19010.00=5.21%	|sell higher, pass
+ 
+	|8	|HSIZ4	|Buy	|18000.0	|NO	|(18000.00-18800.00)/18800.00=-4.26%	|abs(-4.26%)<5.00%, pass
+ 
+	|9	|HSIZ4	|Buy	|19060.0	|NO	|(19060.00-18800.00)/18800.00=1.38%	|1.38%<5.00%, pass
+ 
+	|10	|HSIZ4	|Buy	|17000.0	|NO	|(17000.00-18800.00)/18800.00=-9.57%	|buy lower, pass
+ 
+	|11	|HSIZ4	|Buy	|20200.0	|YES	|(20200.00-18800.00)/18800.00=7.45%	|7.45%>=5.00%, block
+ 
+	|12	|HSIZ4	|Sell	|18000.0	|NO	|(18000.00-18800.00)/18800.00=-4.26%	|abs(-4.26%)<5.00%, pass
+ 
+	|13	|HSIZ4	|Sell	|19060.0	|NO	|(19060.00-18800.00)/18800.00=1.38%	|1.38%<5.00%, pass
+ 
+	|14	|HSIZ4	|Sell	|17000.0	|YES	|(17000.00-18800.00)/18800.00=-9.57%	|abs(-9.57%)>=5.00%, block
+ 
+	|15	|HSIZ4	|Sell	|20200.0	|NO	|(20200.00-18800.00)/18800.00=7.45%	|sell higher, pass
+
 
 If there is any question, please feel free to contact me at renchuyubj@163.com directly and thank you.
 
