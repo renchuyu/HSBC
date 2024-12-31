@@ -7,9 +7,10 @@ import static org.junit.Assert.*;
 public class PriceLimiterTest {
 
     private int rowcount;
-    @Test
+   @Test
     public void processCommandOption() throws Exception {
 
+       System.out.println("-------test for Option-----------");
         //initlize the price limiter with test data
         PriceLimiter priceLimiter = new PriceLimiter();
         priceLimiter.setScenarios(Constants.SCENARIOS_ADVANTAGE);
@@ -29,7 +30,9 @@ public class PriceLimiterTest {
         priceLimiter.addPriceRefrence(VOD_L);
 
         priceLimiter.setVariationLimit( Constants.PRODUCT_TYPE_OPTION, Constants.VARIATION_TYPE_TICK, 8);
-        priceLimiter.setVariationLimit( Constants.PRODUCT_TYPE_STOCK, Constants.VARIATION_TYPE_VALUE, 10);
+        //priceLimiter.setVariationLimit( Constants.PRODUCT_TYPE_STOCK, Constants.VARIATION_TYPE_VALUE, 10);
+
+
 
         System.out.println("*******Options********");
         try {
@@ -121,7 +124,7 @@ public class PriceLimiterTest {
     @Test
     public void processCommandStock() throws Exception {
 
-
+        System.out.println("-------test for Stock-----------");
          //initlize the price limiter with test data
         PriceLimiter priceLimiter = new PriceLimiter();
         priceLimiter.setScenarios(Constants.SCENARIOS_BOTH);
@@ -135,7 +138,7 @@ public class PriceLimiterTest {
         PriceReference VOD_L = new PriceReference("VOD.L" ,"Stock", 240	,245,231 );
         priceLimiter.addPriceRefrence(VOD_L);
 
-        priceLimiter.setVariationLimit( Constants.PRODUCT_TYPE_OPTION, Constants.VARIATION_TYPE_TICK, 8);
+        //priceLimiter.setVariationLimit( Constants.PRODUCT_TYPE_OPTION, Constants.VARIATION_TYPE_TICK, 8);
         priceLimiter.setVariationLimit( Constants.PRODUCT_TYPE_STOCK, Constants.VARIATION_TYPE_VALUE, 10);
 
         System.out.println("****** Stocks ********");
@@ -160,7 +163,82 @@ public class PriceLimiterTest {
 
     }
 
-        public void printOutMessage(String instrument, String side, float price, Message message)
+    @Test
+    public void processCommandFuture() throws Exception {
+
+        System.out.println("-------test for Future-----------");
+        //initlize the price limiter with test data
+        PriceLimiter priceLimiter = new PriceLimiter();
+        priceLimiter.setScenarios(Constants.SCENARIOS_DISADVANTAGE);
+
+        PriceReference HSIZ4 = new PriceReference("HSIZ4" ,"Future", 19000	,19010,19020 );
+        priceLimiter.addPriceRefrence(HSIZ4);
+
+
+        priceLimiter.setVariationLimit( Constants.PRODUCT_TYPE_FUTURE, Constants.VARIATION_TYPE_PERCENTAGE, 5);
+
+        System.out.println("****** Future ********");
+
+
+        Message message = priceLimiter.processCommand("HSIZ4", "Buy", 18900);
+        printOutMessage("HSIZ4", "Buy", 18900, message);
+
+        message = priceLimiter.processCommand("HSIZ4", "Buy", 19050);
+        printOutMessage("HSIZ4", "Buy", 20000, message);
+
+        message = priceLimiter.processCommand("HSIZ4", "Buy", 18000);
+        printOutMessage("HSIZ4", "Buy", 18000, message);
+
+        message = priceLimiter.processCommand("HSIZ4", "Buy", 20000);
+        printOutMessage("HSIZ4", "Buy", 18000, message);
+
+
+        message = priceLimiter.processCommand("HSIZ4", "Sell", 18900);
+        printOutMessage("HSIZ4", "Sell", 18900, message);
+
+        message = priceLimiter.processCommand("HSIZ4", "Sell", 19050);
+        printOutMessage("HSIZ4", "Sell", 19050, message);
+
+
+        message = priceLimiter.processCommand("HSIZ4", "Sell", 18000);
+        printOutMessage("HSIZ4", "Sell", 18000, message);
+
+        message = priceLimiter.processCommand("HSIZ4", "Sell", 20000);
+        printOutMessage("HSIZ4", "Sell", 20000, message);
+
+        //change the last trading price
+        priceLimiter.setLastTradingPrice("HSIZ4", 18800);
+
+        message = priceLimiter.processCommand("HSIZ4", "Buy", 18000);
+        printOutMessage("HSIZ4", "Buy", 18000, message);
+
+        message = priceLimiter.processCommand("HSIZ4", "Buy", 19060);
+        printOutMessage("HSIZ4", "Buy", 19060, message);
+
+        message = priceLimiter.processCommand("HSIZ4", "Buy", 17000);
+        printOutMessage("HSIZ4", "Buy", 17000, message);
+
+
+        message = priceLimiter.processCommand("HSIZ4", "Buy", 20200);
+        printOutMessage("HSIZ4", "Buy", 20200 , message);
+
+
+        message = priceLimiter.processCommand("HSIZ4", "Sell", 18000);
+        printOutMessage("HSIZ4", "Sell", 18000, message);
+
+        message = priceLimiter.processCommand("HSIZ4", "Sell", 19060);
+        printOutMessage("HSIZ4", "Sell", 19060, message);
+
+        message = priceLimiter.processCommand("HSIZ4", "Sell", 17000);
+        printOutMessage("HSIZ4", "Sell", 17000, message);
+
+        message = priceLimiter.processCommand("HSIZ4", "Sell", 20200);
+        printOutMessage("HSIZ4", "Sell", 20200 , message);
+
+    }
+
+
+    public void printOutMessage(String instrument, String side, float price, Message message)
     {
         System.out.println( "\t|" + rowcount + "\t|" + instrument + "\t|" + side + "\t|" + price + "\t|" + convertBoolean(message.alert) + "\t|" + message.variation + "\t|" + message.getDescription());
 
