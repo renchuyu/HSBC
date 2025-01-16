@@ -174,7 +174,7 @@ public class PriceLimiter {
                 //((order price - reference price)/ reference price) *100 is the percentage
                 BigDecimal variationPercentage = (price.subtract(priceReference.getReferencePrice()).divide(priceReference.getReferencePrice(),4, RoundingMode.HALF_UP));
 
-                //string concatenation for variation description
+                //string concatenation for variation description, + is equal to stringbuilder when concat string without loop, complier use stringbuilder.append in this case .
                 String variationStrPecentage = "(" + price + "-"+priceReference.getReferencePrice() + ")/" + priceReference.getReferencePrice() + "="+formatToPercentage(variationPercentage.floatValue()) ;
 
                 String pecentageStr = "";
