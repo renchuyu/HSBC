@@ -1,6 +1,7 @@
 package org.example;
 
 public class Constants {
+    //adding test
     public static final String SCENARIOS_ADVANTAGE = "ADVANTAGE";
     public static final String SCENARIOS_DISADVANTAGE = "DISADVANTAGE";
     public static final String SCENARIOS_BOTH = "BOTH";
